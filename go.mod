@@ -1,3 +1,3 @@
-module threefoldtech/uptimer
+module dylanverstraete/uptimer
 
 go 1.17
