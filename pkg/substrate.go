@@ -5,6 +5,7 @@ import (
 	//"github.com/centrifuge/go-substrate-rpc-client/v4/config"
 	//"github.com/centrifuge/go-substrate-rpc-client/v4/signature"
 	"context"
+	"fmt"
 
 	"github.com/centrifuge/go-substrate-rpc-client/v4/rpc/state"
 	"github.com/centrifuge/go-substrate-rpc-client/v4/types"
@@ -64,6 +65,20 @@ func Start(ctx context.Context) error {
 }
 
 func (uptimer *Uptimer) processEventsForHeight(height uint32) error {
+	// log.Info().Msgf("fetching events for blockheight %d", height)
+	records, err := uptimer.subClient.GetEventsForBlock(height)
+	if err != nil {
+		// log.Info().Msgf("failed to decode block with height %d", height)
+		return err
+	}
+
+	for _, e := range records.TfgridModule_NodeUptimeReported {
+		// TODO, SERIALIZE INTO OBJECTS -> SAVE IN MONGO
+		fmt.Println(e.Node)
+		fmt.Println(e.Timestamp)
+		fmt.Println(e.Uptime)
+	}
+
 	return nil
 }
 
